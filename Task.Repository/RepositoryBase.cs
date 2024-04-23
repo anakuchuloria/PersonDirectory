@@ -54,5 +54,13 @@ namespace Task.Repository
             }
             _dbSet.Remove(entity);
         }
+
+        public async Task<T> GetAsync(params object[] id) => await _dbSet.FindAsync(id) ?? throw new KeyNotFoundException();
+
+        public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default) =>
+           await _dbSet.ToListAsync(cancellationToken);
+
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default) =>
+            await _dbSet.Where(expression).ToListAsync(cancellationToken);
     }
 }

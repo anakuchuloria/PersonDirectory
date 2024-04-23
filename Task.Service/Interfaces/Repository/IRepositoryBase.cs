@@ -12,4 +12,9 @@ public interface IRepositoryBase<T> where T : class
     void InsertOrUpdate(T entity);
     void Delete(object id);
     void Delete(T entity);
+
+    Task<T> GetAsync(params object[] id);
+
+    Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default);
 }

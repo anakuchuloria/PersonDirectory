@@ -20,20 +20,18 @@ public sealed class UserService : IUserService
         SaveChanges();
     }
 
-    public User GetUser(int userId)
+    public async Task<User> GetUser(int userId)
     {
-        User user = _unitOfWork.UserRepository.Get(userId);
-        if (user == null) throw new InvalidDataException("The UserId could not be found");
-
+        var user = await _unitOfWork.UserRepository.GetAsync(userId);
         return user;
     }
 
-    public IQueryable<User> GetUsers()
+    public Task<IQueryable<User>> GetUsers()
     {
         var users = _unitOfWork.UserRepository.GetAll();
         if (users == null) throw new InvalidDataException("The UserId could not be found");
 
-        return users;
+        return (Task<IQueryable<User>>)users;
     }
 
     public void UpdateUser(User user)
@@ -70,7 +68,7 @@ public sealed class UserService : IUserService
 
     public void RemoveRelation(int relationId)
     {
-        Relation relation = _unitOfWork.RelationRepository.Get(relationId) ?? 
+        Relation relation = _unitOfWork.RelationRepository.Get(relationId) ??
             throw new ArgumentNullException($"The relation with Id: {relationId} does not exist");
 
         relation.IsDeleted = true;

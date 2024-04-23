@@ -1,12 +1,11 @@
 ﻿using Task.DTO;
-using Task.Service.Interfaces.Repository;
 
 namespace Task.Service.Interfaces.Services;
 
 public interface IUserService
 {
-    User GetUser(int id);
-    IQueryable<User> GetUsers();
+    Task<User> GetUser(int id);
+    Task<IQueryable<User>> GetUsers();
     void CreateUser(User user);
     void UpdateUser(User user);
     void DeleteUser(int userId);
